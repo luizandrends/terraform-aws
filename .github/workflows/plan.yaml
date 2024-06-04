@@ -22,15 +22,10 @@ jobs:
         uses: webfactory/ssh-agent@v0.8.0
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_version: 1.5.5
-          terraform_wrapper: false
       - name: Setup Terragrunt
         uses: autero1/action-terragrunt@v1.1.0
         with:
-          terragrunt_version: 0.52.3
+          terragrunt_version: 0.58.9
       - name: Terragrunt Plan
         run: |
           echo "Running Terragrunt Plan"
