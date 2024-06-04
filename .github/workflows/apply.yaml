@@ -1,11 +1,13 @@
-name: Terragrunt Plan
+name: Terragrunt Apply
 
 on:
-  pull_request:
+  push:
+    branches:
+      - main
     paths:
       - "**/*.hcl"
 jobs:
-  terragrunt-plan:
+  terragrunt-apply:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -36,7 +38,7 @@ jobs:
         uses: autero1/action-terragrunt@v1.1.0
         with:
           terragrunt_version: 0.58.9
-      - name: Terragrunt Plan
+      - name: Terragrunt Apply
         run: |
-          echo "Running Terragrunt Plan"
-          terragrunt run-all plan --terragrunt-non-interactive
+          echo "Running Terragrunt Apply"
+          terragrunt run-all apply --terragrunt-non-interactive
