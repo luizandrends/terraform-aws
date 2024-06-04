@@ -37,6 +37,19 @@ jobs:
         with:
           terragrunt_version: 0.58.9
       - name: Terragrunt Plan
+        id: plan
         run: |
           echo "Running Terragrunt Plan"
-          terragrunt run-all plan --terragrunt-non-interactive
+          echo "::set-output name=result::$(terragrunt run-all plan --terragrunt-non-interactive)"
+      - name: Comment PR
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const issue_number = context.payload.pull_request.number;
+            const result = `${{ steps.plan.outputs.result }}`;
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue_number,
+              body: `Resultado do Terragrunt Plan:\n\n\`\`\`\n${result}\n\`\`\``
+            });

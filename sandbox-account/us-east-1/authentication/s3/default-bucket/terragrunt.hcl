@@ -13,6 +13,10 @@ terraform {
 
 inputs = merge(local.application_tags, {
   name = "default"
+
+  versioning = {
+    status = true
+  }
 })
 
 include {
