@@ -1,0 +1,44 @@
+name: Terragrunt Apply
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "**/*.hcl"
+jobs:
+  terragrunt-apply:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Configure AWS credentials from Test account
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE }}
+          aws-region: us-east-1
+      - name: Setup SSH Key
+        uses: webfactory/ssh-agent@v0.8.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Setup OpenTofu
+        run: |
+          wget https://github.com/opentofu/opentofu/releases/download/v${{ env.OPEN_TF_VERSION }}/tofu_${{ env.OPEN_TF_VERSION }}_linux_amd64.tar.gz
+          tar xf tofu_${{ env.OPEN_TF_VERSION }}_linux_amd64.tar.gz
+          rm -rf tofu_${{ env.OPEN_TF_VERSION }}_linux_amd64.tar.gz
+          mv tofu /usr/local/bin/tofu
+          chmod +x /usr/local/bin/tofu
+          tofu -v
+        env:
+          OPEN_TF_VERSION: 1.7.1
+      - name: Setup Terragrunt
+        uses: autero1/action-terragrunt@v1.1.0
+        with:
+          terragrunt_version: 0.58.9
+      - name: Terragrunt Apply
+        run: |
+          echo "Running Terragrunt Apply"
+          terragrunt run-all apply --terragrunt-non-interactive
