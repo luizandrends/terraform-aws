@@ -22,6 +22,10 @@ jobs:
         uses: webfactory/ssh-agent@v0.8.0
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Setup OpenTofu
+        uses: opentofu/setup-opentofu@v1
+        with:
+          opentofu_version: 1.7.1
       - name: Setup Terragrunt
         uses: autero1/action-terragrunt@v1.1.0
         with:
