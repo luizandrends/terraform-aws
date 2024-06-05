@@ -45,3 +45,4 @@ jobs:
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: ${{ steps.plan.outputs.result }}
+          pr_number: ${{ github.event.pull_request.number }}
