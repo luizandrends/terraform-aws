@@ -41,7 +41,8 @@ jobs:
         id: plan
         run: |
           echo "Running Terragrunt Plan"
-          PLAN=$(terragrunt run-all plan)
+          terragrunt run-all plan > plan.out
+          PLAN=$(cat plan.out)
           echo "PLAN=$PLAN" >> $GITHUB_ENV
       - name: Comment PR
         uses: mshick/add-pr-comment@v2
