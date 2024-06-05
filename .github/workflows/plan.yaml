@@ -43,11 +43,10 @@ jobs:
         id: plan
         run: |
           echo "Running Terragrunt Plan for modified paths"
+          export OUTPUTS=""
           git diff --name-only origin/main | grep .hcl$ | while read line; do
             DIR=$(dirname "$line")
-            terragrunt plan --terragrunt-working-dir "$DIR" > "$DIR/plan.out" &
-            PID=$!
-            wait $PID
+            terragrunt plan --terragrunt-working-dir "$DIR" > "$DIR/plan.out"
             PLAN=$(cat "$DIR/plan.out")
             OUTPUTS="$OUTPUTS$PLAN;;;"
           done
