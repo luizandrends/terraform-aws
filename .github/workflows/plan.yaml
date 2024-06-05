@@ -41,7 +41,7 @@ jobs:
         id: plan
         run: |
           echo "Running Terragrunt Plan"
-          terragrunt run-all plan > plan.out
+          terragrunt run-all plan -no-color > plan.out
       - name: Comment PR
         uses: actions/github-script@v6
         with:
