@@ -43,19 +43,11 @@ jobs:
         id: plan
         run: |
           echo "Running Terragrunt Plan for modified paths"
-          export OUTPUTS=""
+          ITERATOR=0
           git diff --name-only origin/main | grep .hcl$ | while read line; do
             DIR=$(dirname "$line")
-            terragrunt plan --terragrunt-working-dir "$DIR" > $DIR/plan.txt
-            curl \
-              -X POST \
-              -H "Authorization: token $GITHUB_TOKEN" \
-              -H "Accept: application/vnd.github.v3+json" \
-              https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/issues/$PR_ID/comments \
-              -d "{\"body\":\"```yaml$DIR/plan.txt```\"}"
-          done
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          REPO_OWNER: ${{ github.repository_owner }}
-          REPO_NAME: ${{ github.event.repository.name }}
-          PR_ID: ${{ github.event.number }}
+            terragrunt plan --terragrunt-working-dir "$DIR" > "plan_${ITERATOR}.txt"
+            ITERATOR=$((ITERATOR+1))
+      - name: Echo Plans
+        run: |
+          ls -lha
