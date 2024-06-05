@@ -48,4 +48,6 @@ jobs:
           allow-repeats: true
           message: |
             **Your Plan Result**
+            ```hcl
             ${{steps.plan.outputs.result}}
+            ```
