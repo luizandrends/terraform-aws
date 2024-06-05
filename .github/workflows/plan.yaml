@@ -42,8 +42,6 @@ jobs:
         run: |
           echo "Running Terragrunt Plan"
           terragrunt run-all plan > plan.out
-          PLAN=$(cat plan.out)
-          echo "PLAN=$PLAN" >> $GITHUB_ENV
       - name: Comment PR
         uses: mshick/add-pr-comment@v2
         with:
@@ -51,5 +49,7 @@ jobs:
           message: |
             **Your Plan Result**
             ```hcl
-            ${{ env.PLAN }}
+            ${{ steps.plan.outputs.result }}
             ```
+        env:
+          PLAN: ${{ steps.plan.outputs.result }}
