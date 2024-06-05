@@ -10,6 +10,7 @@ jobs:
     permissions:
       id-token: write
       contents: read
+      pull-requests: write
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -42,7 +43,8 @@ jobs:
           echo "Running Terragrunt Plan"
           echo "::set-output name=result::$(terragrunt run-all plan --terragrunt-non-interactive)"
       - name: Comment PR
-        uses: thollander/actions-comment-pull-request@v2
+        uses: mshick/add-pr-comment@v2
         with:
-          message: ${{ steps.plan.outputs.result }}
-          pr_number: ${{ github.event.pull_request.number }}
+          message: |
+            **Your Plan Result**
+            ${{ steps.plan.outputs.result }}
