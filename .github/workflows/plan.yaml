@@ -41,7 +41,7 @@ jobs:
         id: plan
         run: |
           echo "Running Terragrunt Plan for modified paths"
-          git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep .hcl$ | while read line; do
+          git diff --name-only origin/main | grep .hcl$ | while read line; do
             DIR=$(dirname "$line")
             terragrunt plan --terragrunt-working-dir "$DIR" > plan.out
             PLAN=$(cat plan.out)
@@ -55,7 +55,7 @@ jobs:
             const plan = '${{ steps.plan.outputs.plan }}';
             const dir = '${{ steps.plan.outputs.dir }}';
             const message = `
-              ## 🚀 Terragrunt Plan Result for ${dir} 🚀
+              ## 🚀 Terragrunt Plan Result for **${dir}** 🚀
               Here is the result of the Terragrunt Plan that was run for your pull request:
 
               \`\`\`yaml
