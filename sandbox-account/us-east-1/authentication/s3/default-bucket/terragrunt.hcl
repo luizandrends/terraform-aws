@@ -17,8 +17,6 @@ inputs = merge(local.application_tags, {
   versioning = {
     status = true
   }
-
-  
 })
 
 include {
