@@ -15,7 +15,7 @@ inputs = merge(local.application_tags, {
   name = "another"
 
   versioning = {
-    status = false
+    status = true
   }
 })
 
