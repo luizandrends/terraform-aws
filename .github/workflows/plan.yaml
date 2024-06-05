@@ -45,6 +45,7 @@ jobs:
       - name: Comment PR
         uses: mshick/add-pr-comment@v2
         with:
+          allow-repeats: true
           message: |
             **Your Plan Result**
             ${{ steps.plan.outputs.result }}
