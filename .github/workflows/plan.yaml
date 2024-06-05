@@ -48,4 +48,4 @@ jobs:
             terragrunt plan --terragrunt-working-dir "$DIR"
           done
         env:
-          TF_INPUT: false
+          TF_INPUT: "false"
