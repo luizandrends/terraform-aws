@@ -41,11 +41,11 @@ jobs:
         id: plan
         run: |
           echo "Running Terragrunt Plan"
-          echo "$(terragrunt run-all plan)" >> $GITHUB_OUTPUT
+          echo "::set-output name=result::$(terragrunt run-all plan)"
       - name: Comment PR
         uses: mshick/add-pr-comment@v2
         with:
           allow-repeats: true
           message: |
             **Your Plan Result**
-            ${{steps.plan.outputs.*}}
+            ${{steps.plan.outputs.result}}
