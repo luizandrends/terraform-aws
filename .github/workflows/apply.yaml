@@ -48,4 +48,4 @@ jobs:
             terragrunt apply --terragrunt-working-dir "$DIR"
           done
         env:
-          TF_IN_AUTOMATION: "true"
+          TF_IN_AUTOMATION: true
