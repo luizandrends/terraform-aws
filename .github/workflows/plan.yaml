@@ -45,5 +45,7 @@ jobs:
           echo "Running Terragrunt Plan for modified paths"
           git diff --name-only origin/main | grep .hcl$ | while read line; do
             DIR=$(dirname "$line")
-            terragrunt plan --terragrunt-non-interactive true --terragrunt-working-dir "$DIR"
+            terragrunt plan --terragrunt-working-dir "$DIR"
           done
+        env:
+          TF_INPUT: false
