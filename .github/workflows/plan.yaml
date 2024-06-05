@@ -48,6 +48,7 @@ jobs:
             DIR=$(dirname "$line")
             terragrunt plan --terragrunt-working-dir "$DIR" > "plan_${ITERATOR}.txt"
             ITERATOR=$((ITERATOR+1))
+          done
       - name: Echo Plans
         run: |
           ls -lha
