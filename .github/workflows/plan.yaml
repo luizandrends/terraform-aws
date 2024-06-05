@@ -40,8 +40,8 @@ jobs:
       - name: Terragrunt Plan
         id: plan
         run: |
-          echo "Running Terragrunt Plan"
-          echo "::set-output name=result::$(terragrunt run-all plan --terragrunt-non-interactive)"
+          PLAN=$(terragrunt run-all plan -out=plan.out)
+          echo "::set-output name=result::$PLAN"
       - name: Comment PR
         uses: mshick/add-pr-comment@v2
         with:
