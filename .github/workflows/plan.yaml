@@ -43,9 +43,11 @@ jobs:
         id: plan
         run: |
           echo "Running Terragrunt Plan for modified paths"
+          ITERATOR=0
           git diff --name-only origin/main | grep .hcl$ | while read line; do
             DIR=$(dirname "$line")
-            terragrunt plan --terragrunt-working-dir "$DIR"
+            terragrunt plan --terragrunt-working-dir -out=$(pwd)/plan$ITERATOR
           done
-        env:
-          TF_INPUT: "false"
+      - name: Echo Plans
+        run: |
+          ls -lha

@@ -15,7 +15,7 @@ inputs = merge(local.application_tags, {
   name = "default"
 
   versioning = {
-    status = true
+    status = false
   }
 })
 
@@ -24,4 +24,3 @@ include {
 }
 
 generate = local.providers.generate
-
