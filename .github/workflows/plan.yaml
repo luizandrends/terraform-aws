@@ -48,16 +48,22 @@ jobs:
           script: |
             const plan = require('fs').readFileSync('plan.out').toString();
             const message = `
-              ## 🚀 Terragrunt Plan Result 🚀
-              Here is the result of the Terragrunt Plan that was run for your pull request:
+              ## 🚀🌟 Terragrunt Plan Result 🌟🚀
+              Hello there! 👋 The Terragrunt Plan has been executed for your pull request. Here's what we've got:
 
               \`\`\`yaml
               ${plan}
               \`\`\`
 
-              Please review the plan output above. If everything looks correct, you can proceed with the merge. If you see anything unexpected, please make sure to fix your changes or discuss with the team.
+              🧐 Please take a moment to review the plan output above. 
 
-              Happy coding! 💻
+              ✅ If everything looks as expected, feel free to proceed with the merge. 
+
+              ❗ If anything looks off or unexpected, please make sure to update your changes or discuss with the team.
+
+              Thank you for your contribution! 🎉👏
+
+              Happy coding! 💻🚀
             `;
             github.rest.issues.createComment({
               issue_number: context.issue.number,
