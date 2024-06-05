@@ -47,10 +47,10 @@ jobs:
           git diff --name-only origin/main | grep .hcl$ | while read line; do
             DIR=$(dirname "$line")
             terragrunt plan --terragrunt-working-dir "$DIR" > "$DIR/plan.out"
-            echo "plan$ITERATOR" >> $GITHUB_OUTPUT
-            ITERATOR=$((ITERATOR+1))
+            PLAN$ITERATOR=$(cat "$DIR/plan.out")
+            echo "::set-output name=plan$ITERATOR::$PLAN$ITERATOR"
           done
       - name: Echo Plan Outputs
         run: |
           echo "Plan Outputs:"
-          ${{ steps.plan.outputs.* }}
+          ${{ steps.plan.outputs.plans }}
