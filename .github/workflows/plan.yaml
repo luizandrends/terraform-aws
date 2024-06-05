@@ -57,7 +57,8 @@ jobs:
             const plan = '${{ steps.plan.outputs.plan }}';
             const dir = '${{ steps.plan.outputs.dir }}';
             const message = `
-              ## 🚀 Terragrunt Plan Result for **${dir}** 🚀
+              ## 🚀 Terragrunt Plan Result 🚀
+              ### Path: ${dir}
               Here is the result of the Terragrunt Plan that was run for your pull request:
 
               \`\`\`yaml
