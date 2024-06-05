@@ -40,30 +40,31 @@ jobs:
       - name: Terragrunt Plan
         id: plan
         run: |
-          echo "Running Terragrunt Plan"
-          terragrunt run-all plan -no-color > plan.out
-      - name: Comment PR
+          echo "Running Terragrunt Plan for modified paths"
+          git diff --name-only HEAD^ | grep .tf$ | while read line; do
+            DIR=$(dirname "$line")
+            terragrunt plan --terragrunt-working-dir "$DIR" > plan.out
+            PLAN=$(cat plan.out)
+            echo "::set-output name=plan::$PLAN"
+            echo "::set-output name=dir::$DIR"
+          done
+      - name: Comment PR for each modified path
         uses: actions/github-script@v6
         with:
           script: |
-            const plan = require('fs').readFileSync('plan.out').toString();
+            const plan = '${{ steps.plan.outputs.plan }}';
+            const dir = '${{ steps.plan.outputs.dir }}';
             const message = `
-              ## 🚀🌟 Terragrunt Plan Result 🌟🚀
-              Hello there! 👋 The Terragrunt Plan has been executed for your pull request. Here's what we've got:
+              ## 🚀 Terragrunt Plan Result for ${dir} 🚀
+              Here is the result of the Terragrunt Plan that was run for your pull request:
 
               \`\`\`yaml
               ${plan}
               \`\`\`
 
-              🧐 Please take a moment to review the plan output above. 
+              Please review the plan output above. If everything looks correct, you can proceed with the merge. If you see anything unexpected, please make sure to fix your changes or discuss with the team.
 
-              ✅ If everything looks as expected, feel free to proceed with the merge. 
-
-              ❗ If anything looks off or unexpected, please make sure to update your changes or discuss with the team.
-
-              Thank you for your contribution! 🎉👏
-
-              Happy coding! 💻🚀
+              Happy coding! 💻
             `;
             github.rest.issues.createComment({
               issue_number: context.issue.number,
