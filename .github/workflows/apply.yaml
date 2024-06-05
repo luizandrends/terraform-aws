@@ -40,5 +40,11 @@ jobs:
           terragrunt_version: 0.58.9
       - name: Terragrunt Apply
         run: |
-          echo "Running Terragrunt Apply"
-          terragrunt run-all apply --terragrunt-non-interactive
+          echo "Running Terragrunt Apply for modified paths"
+          git diff --name-only origin/main | grep .hcl$ | while read line; do
+            DIR=$(dirname "$line")
+            terragrunt apply --terragrunt-working-dir "$DIR" > plan.out
+            PLAN=$(cat plan.out)
+            echo "::set-output name=plan::$PLAN"
+            echo "::set-output name=dir::$DIR"
+          done

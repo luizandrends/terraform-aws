@@ -10,9 +10,12 @@ jobs:
     permissions:
       id-token: write
       contents: read
+      pull-requests: write
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - name: Configure AWS credentials from Test account
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -37,6 +40,13 @@ jobs:
         with:
           terragrunt_version: 0.58.9
       - name: Terragrunt Plan
+        id: plan
         run: |
-          echo "Running Terragrunt Plan"
-          terragrunt run-all plan --terragrunt-non-interactive
+          echo "Running Terragrunt Plan for modified paths"
+          git diff --name-only origin/main | grep .hcl$ | while read line; do
+            DIR=$(dirname "$line")
+            terragrunt plan --terragrunt-working-dir "$DIR" > plan.out
+            PLAN=$(cat plan.out)
+            echo "::set-output name=plan::$PLAN"
+            echo "::set-output name=dir::$DIR"
+          done

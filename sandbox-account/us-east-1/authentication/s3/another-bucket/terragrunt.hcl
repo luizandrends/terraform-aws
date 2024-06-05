@@ -12,7 +12,7 @@ terraform {
 }
 
 inputs = merge(local.application_tags, {
-  name = "default"
+  name = "another"
 
   versioning = {
     status = true
