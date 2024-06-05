@@ -50,16 +50,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '**Your Plan Result**\n```hcl\n' + require('fs').readFileSync('plan.out', 'utf8') + '\n```\n'
+              body: '**Your Plan Result**\n```hcl\n' + require('fs').readFileSync('plan.out').toString() + '\n```\n'
             })
-      - name: Comment PR
-        uses: mshick/add-pr-comment@v2
-        with:
-          allow-repeats: true
-          message: |
-            **Your Plan Result**
-            ```hcl
-            ${{ steps.plan.outputs.result }}
-            ```
-        env:
-          PLAN: ${{ steps.plan.outputs.result }}
