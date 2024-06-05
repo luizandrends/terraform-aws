@@ -40,12 +40,12 @@ jobs:
       - name: Terragrunt Plan
         id: plan
         run: |
-          PLAN=$(terragrunt run-all plan -out=plan.out)
-          echo "::set-output name=result::$PLAN"
+          echo "Running Terragrunt Plan"
+          echo "$(terragrunt run-all plan)" >> $PLAN_OUTPUT
       - name: Comment PR
         uses: mshick/add-pr-comment@v2
         with:
           allow-repeats: true
           message: |
             **Your Plan Result**
-            steps.plan.outputs.result
+            ${{steps.plan.outputs.*}}
