@@ -48,4 +48,4 @@ jobs:
           allow-repeats: true
           message: |
             **Your Plan Result**
-            ${{ steps.plan.outputs.result }}
+            steps.plan.outputs.result
