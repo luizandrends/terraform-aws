@@ -46,7 +46,8 @@ jobs:
           git diff --name-only origin/main | grep .hcl$ | while read line; do
             DIR=$(dirname "$line")
             terragrunt plan --terragrunt-working-dir "$DIR" > plan.out
-            PLAN=$(echo plan.out)
+            cat plan.out > planfile
+            PLAN=$(echo planfile)
             echo "::set-output name=plan::$PLAN"
             echo "::set-output name=dir::$DIR"
           done
