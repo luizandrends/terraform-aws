@@ -45,7 +45,10 @@ jobs:
           echo "Running Terragrunt Plan for modified paths"
           git diff --name-only origin/main | grep .hcl$ | while read line; do
             DIR=$(dirname "$line")
-            terragrunt plan --terragrunt-working-dir "$DIR"
+            terragrunt plan --terragrunt-working-dir "$DIR" > "$DIR/plan.out"
+            echo "$DIR-plan" >> $GITHUB_OUTPUT
           done
-        env:
-          TF_INPUT: "false"
+      - name: Echo Plan Outputs
+        run: |
+          echo "Plan Outputs:"
+          ${{ steps.plan.outputs.* }}
